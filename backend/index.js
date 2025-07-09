@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
 const { sequelize } = require('./models');
 const authRoutes = require('./routes/auth');
 const ongRoutes = require('./routes/ong');
@@ -13,9 +15,15 @@ const statsRoutes = require('./routes/stats');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Ensure uploads directory exists
+const uploadsPath = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsPath)) {
+  fs.mkdirSync(uploadsPath, { recursive: true });
+}
+
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static('backend/uploads'));
+app.use('/uploads', express.static(uploadsPath));
 
 app.use('/auth', authRoutes);
 app.use('/ongs', ongRoutes);
