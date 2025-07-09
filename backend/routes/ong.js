@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const multer = require('multer');
 const { ONG } = require('../models');
+const { Op } = require('sequelize');
 const auth = require('../middlewares/authMiddleware');
 const role = require('../middlewares/roleMiddleware');
 
@@ -18,6 +19,27 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+
+// List ONGs with filters and pagination (admin only)
+router.get('/', auth, role(['admin']), async (req, res) => {
+  try {
+    const { page = 1, limit = 10, status, name } = req.query;
+    const where = {};
+    if (status) where.status = status;
+    if (name) where.name = { [Op.like]: `%${name}%` };
+
+    const result = await ONG.findAndCountAll({
+      where,
+      offset: (parseInt(page) - 1) * parseInt(limit),
+      limit: parseInt(limit)
+    });
+
+    res.json({ data: result.rows, total: result.count, page: parseInt(page) });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 // Register ONG
 router.post('/', upload.fields([{ name: 'statute', maxCount: 1 }, { name: 'documents', maxCount: 1 }]), async (req, res) => {

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { Withdrawal, Stock } = require('../models');
+const { Op } = require('sequelize');
 const auth = require('../middlewares/authMiddleware');
 const role = require('../middlewares/roleMiddleware');
 
@@ -63,13 +64,26 @@ router.put('/:id', auth, role(['admin']), async (req, res) => {
 // Get withdrawal history
 router.get('/', auth, async (req, res) => {
   try {
-    let list;
-    if (req.user.role === 'admin') {
-      list = await Withdrawal.findAll();
-    } else {
-      list = await Withdrawal.findAll({ where: { userId: req.user.id } });
+    const { page = 1, limit = 10, status, userId, ongId } = req.query;
+    const where = {};
+
+    if (req.user.role !== 'admin') {
+      where.userId = req.user.id;
+    } else if (userId) {
+      where.userId = userId;
     }
-    res.json(list);
+
+    if (ongId) where.ongId = ongId;
+    if (status) where.status = status;
+
+    const result = await Withdrawal.findAndCountAll({
+      where,
+      order: [['date', 'DESC']],
+      offset: (parseInt(page) - 1) * parseInt(limit),
+      limit: parseInt(limit)
+    });
+
+    res.json({ data: result.rows, total: result.count, page: parseInt(page) });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
