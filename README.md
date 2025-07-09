@@ -15,6 +15,11 @@ En la carpeta `backend` copiar el archivo `.env.example` a `.env` y completar lo
 - `DB_PASSWORD`: contraseña del usuario.
 - `JWT_SECRET`: clave para firmar los tokens.
 
+En `frontend` también puede crearse un archivo `.env` (ver `.env.example`) con las siguientes variables:
+
+- `PORT`: puerto del servidor de desarrollo de React (por defecto 3001).
+- `REACT_APP_API_URL`: URL base del backend al que se realizarán las peticiones.
+
 ## Levantar el backend
 
 ```bash
@@ -31,7 +36,9 @@ El script `npm run seed-roles` crea los roles básicos en la base de datos.
 ```bash
 cd frontend
 npm install
-npm run dev
+PORT=3001 npm run dev
+
+Asegúrate de que `REACT_APP_API_URL` apunte a la URL del backend.
 ```
 
 ## Roles
