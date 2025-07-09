@@ -9,6 +9,22 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL(10,2),
       allowNull: false,
     },
+    variety: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    reason: {
+      type: DataTypes.TEXT,
+    },
+    status: {
+      type: DataTypes.ENUM('pendiente', 'aprobado', 'rechazado'),
+      defaultValue: 'pendiente',
+    }
   });
 
   Withdrawal.associate = models => {

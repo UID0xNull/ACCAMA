@@ -6,6 +6,7 @@ const models = {
   User: require('./user')(sequelize, DataTypes),
   ONG: require('./ong')(sequelize, DataTypes),
   Withdrawal: require('./withdrawal')(sequelize, DataTypes),
+  Stock: require('./stock')(sequelize, DataTypes),
   Document: require('./document')(sequelize, DataTypes),
 };
 
