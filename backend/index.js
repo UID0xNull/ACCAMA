@@ -7,6 +7,8 @@ const ongRoutes = require('./routes/ong');
 const withdrawalRoutes = require('./routes/withdrawal');
 const patientRoutes = require('./routes/patient');
 const legalRecordRoutes = require('./routes/legalRecord');
+const userRoutes = require('./routes/user');
+const statsRoutes = require('./routes/stats');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,6 +22,8 @@ app.use('/ongs', ongRoutes);
 app.use('/withdrawals', withdrawalRoutes);
 app.use('/patients', patientRoutes);
 app.use('/legal-records', legalRecordRoutes);
+app.use('/users', userRoutes);
+app.use('/stats', statsRoutes);
 
 app.get('/', (req, res) => {
   res.send('Server is running');
