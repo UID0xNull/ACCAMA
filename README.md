@@ -21,8 +21,10 @@ En la carpeta `backend` copiar el archivo `.env.example` a `.env` y completar lo
 cd backend
 npm install
 npm run sync-db
+npm run seed-roles
 npm start
 ```
+El script `npm run seed-roles` crea los roles básicos en la base de datos.
 
 ## Iniciar el frontend
 
