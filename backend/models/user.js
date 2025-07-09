@@ -21,6 +21,9 @@ module.exports = (sequelize, DataTypes) => {
     authorizedUse: {
       type: DataTypes.STRING,
     },
+    legalStatus: {
+      type: DataTypes.STRING,
+    },
   });
 
   User.associate = models => {
