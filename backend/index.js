@@ -3,14 +3,17 @@ const express = require('express');
 const cors = require('cors');
 const { sequelize } = require('./models');
 const authRoutes = require('./routes/auth');
+const ongRoutes = require('./routes/ong');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static('backend/uploads'));
 
 app.use('/auth', authRoutes);
+app.use('/ongs', ongRoutes);
 
 app.get('/', (req, res) => {
   res.send('Server is running');
