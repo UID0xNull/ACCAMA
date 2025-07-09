@@ -8,6 +8,8 @@ const models = {
   Withdrawal: require('./withdrawal')(sequelize, DataTypes),
   Stock: require('./stock')(sequelize, DataTypes),
   Document: require('./document')(sequelize, DataTypes),
+  DoctorPatient: require('./doctorPatient')(sequelize, DataTypes),
+  MedicalDoc: require('./medicalDoc')(sequelize, DataTypes),
 };
 
 Object.values(models)

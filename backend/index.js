@@ -5,6 +5,7 @@ const { sequelize } = require('./models');
 const authRoutes = require('./routes/auth');
 const ongRoutes = require('./routes/ong');
 const withdrawalRoutes = require('./routes/withdrawal');
+const patientRoutes = require('./routes/patient');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,6 +17,7 @@ app.use('/uploads', express.static('backend/uploads'));
 app.use('/auth', authRoutes);
 app.use('/ongs', ongRoutes);
 app.use('/withdrawals', withdrawalRoutes);
+app.use('/patients', patientRoutes);
 
 app.get('/', (req, res) => {
   res.send('Server is running');

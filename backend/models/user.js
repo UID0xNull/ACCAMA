@@ -18,12 +18,29 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    authorizedUse: {
+      type: DataTypes.STRING,
+    },
   });
 
   User.associate = models => {
     User.belongsTo(models.Role, { foreignKey: 'roleId' });
     User.hasMany(models.Document, { foreignKey: 'userId' });
     User.hasMany(models.Withdrawal, { foreignKey: 'userId' });
+    User.belongsToMany(models.User, {
+      as: 'Patients',
+      through: models.DoctorPatient,
+      foreignKey: 'doctorId',
+      otherKey: 'patientId',
+    });
+    User.belongsToMany(models.User, {
+      as: 'Doctors',
+      through: models.DoctorPatient,
+      foreignKey: 'patientId',
+      otherKey: 'doctorId',
+    });
+    User.hasMany(models.MedicalDoc, { as: 'DoctorDocs', foreignKey: 'doctorId' });
+    User.hasMany(models.MedicalDoc, { as: 'PatientDocs', foreignKey: 'patientId' });
   };
 
   return User;
