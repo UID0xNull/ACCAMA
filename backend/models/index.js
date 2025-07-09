@@ -10,6 +10,7 @@ const models = {
   Document: require('./document')(sequelize, DataTypes),
   DoctorPatient: require('./doctorPatient')(sequelize, DataTypes),
   MedicalDoc: require('./medicalDoc')(sequelize, DataTypes),
+  LegalRecord: require('./legalRecord')(sequelize, DataTypes),
 };
 
 Object.values(models)
