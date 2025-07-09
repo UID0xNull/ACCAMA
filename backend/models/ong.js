@@ -12,6 +12,25 @@ module.exports = (sequelize, DataTypes) => {
     description: {
       type: DataTypes.TEXT,
     },
+    phone: {
+      type: DataTypes.STRING,
+    },
+    email: {
+      type: DataTypes.STRING,
+    },
+    address: {
+      type: DataTypes.STRING,
+    },
+    statute: {
+      type: DataTypes.STRING,
+    },
+    documents: {
+      type: DataTypes.STRING,
+    },
+    status: {
+      type: DataTypes.ENUM('pendiente', 'aprobada', 'rechazada'),
+      defaultValue: 'pendiente',
+    },
   });
 
   ONG.associate = models => {
