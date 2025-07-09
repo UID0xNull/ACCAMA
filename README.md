@@ -5,7 +5,7 @@
 - MariaDB
 
 ## Variables de entorno
-En la carpeta `backend` crear un archivo `.env` con las siguientes claves:
+En la carpeta `backend` copiar el archivo `.env.example` a `.env` y completar los valores de las siguientes claves:
 
 - `PORT`: puerto del servidor (por defecto 3000).
 - `DB_HOST`: host de la base de datos.
@@ -20,6 +20,7 @@ En la carpeta `backend` crear un archivo `.env` con las siguientes claves:
 ```bash
 cd backend
 npm install
+npm run sync-db
 npm start
 ```
 
