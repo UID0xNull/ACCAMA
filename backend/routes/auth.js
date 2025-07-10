@@ -9,7 +9,7 @@ const role = require('../middlewares/roleMiddleware');
 const checkOng = require('../middlewares/ongMatchMiddleware');
 
 // User registration
-router.post('/register', auth, role(['admin']), checkOng('ongId'), async (req, res) => {
+router.post('/register', auth, role(['admin_ong']), checkOng('ongId'), async (req, res) => {
   try {
     const { name, email, password, role: roleName, ongId } = req.body;
     if (!name || !email || !password || !roleName || !ongId) {

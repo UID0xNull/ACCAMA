@@ -6,7 +6,7 @@ const auth = require('../middlewares/authMiddleware');
 const role = require('../middlewares/roleMiddleware');
 
 // List users with filters and pagination (admin only)
-router.get('/', auth, role(['admin']), async (req, res) => {
+router.get('/', auth, role(['admin_ong']), async (req, res) => {
   try {
     const { page = 1, limit = 10, name, email, roleId } = req.query;
     const where = {};
