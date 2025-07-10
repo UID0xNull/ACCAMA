@@ -5,9 +5,10 @@ const { Withdrawal, Stock } = require('../models');
 const { Op } = require('sequelize');
 const auth = require('../middlewares/authMiddleware');
 const role = require('../middlewares/roleMiddleware');
+const checkOng = require('../middlewares/ongMatchMiddleware');
 
 // Create withdrawal request
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, checkOng('ongId'), async (req, res) => {
   try {
     const { amount, variety, reason } = req.body;
     const ongId = req.user.ongId;
@@ -44,6 +45,9 @@ router.put('/:id', auth, role(['admin']), async (req, res) => {
     const { status } = req.body;
     const withdrawal = await Withdrawal.findByPk(req.params.id);
     if (!withdrawal) return res.status(404).json({ error: 'Not found' });
+    if (parseInt(withdrawal.ongId) !== parseInt(req.user.ongId)) {
+      return res.status(403).json({ error: 'ONG mismatch' });
+    }
 
     if (status === 'rechazado' && withdrawal.status === 'pendiente') {
       const stock = await Stock.findOne({ where: { ongId: withdrawal.ongId, variety: withdrawal.variety } });
@@ -63,7 +67,7 @@ router.put('/:id', auth, role(['admin']), async (req, res) => {
 });
 
 // Get withdrawal history
-router.get('/', auth, async (req, res) => {
+router.get('/', auth, checkOng('ongId'), async (req, res) => {
   try {
     const { page = 1, limit = 10, status, userId, ongId } = req.query;
     const where = {};

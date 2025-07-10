@@ -6,6 +6,7 @@ const router = express.Router();
 const { LegalRecord, User } = require('../models');
 const auth = require('../middlewares/authMiddleware');
 const role = require('../middlewares/roleMiddleware');
+const checkOng = require('../middlewares/ongMatchMiddleware');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -26,6 +27,10 @@ router.post('/', auth, role(['doctor']), upload.single('file'), async (req, res)
     if (!patientId || !type) {
       return res.status(400).json({ error: 'Missing fields' });
     }
+    const patient = await User.findByPk(patientId);
+    if (!patient || parseInt(patient.ongId) !== parseInt(req.user.ongId)) {
+      return res.status(403).json({ error: 'ONG mismatch' });
+    }
 
     const record = await LegalRecord.create({
       patientId,
@@ -35,11 +40,8 @@ router.post('/', auth, role(['doctor']), upload.single('file'), async (req, res)
       ongId: req.user.ongId,
     });
 
-    const patient = await User.findByPk(patientId);
-    if (patient) {
-      patient.legalStatus = type;
-      await patient.save();
-    }
+    patient.legalStatus = type;
+    await patient.save();
 
     res.status(201).json(record);
   } catch (err) {
@@ -52,6 +54,10 @@ router.post('/', auth, role(['doctor']), upload.single('file'), async (req, res)
 router.get('/:patientId', auth, async (req, res) => {
   try {
     const { patientId } = req.params;
+    const patient = await User.findByPk(patientId);
+    if (!patient || parseInt(patient.ongId) !== parseInt(req.user.ongId)) {
+      return res.status(403).json({ error: 'ONG mismatch' });
+    }
     const list = await LegalRecord.findAll({ where: { patientId } });
     res.json(list);
   } catch (err) {
