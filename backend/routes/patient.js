@@ -6,6 +6,7 @@ const path = require('path');
 const { User, DoctorPatient, MedicalDoc } = require('../models');
 const auth = require('../middlewares/authMiddleware');
 const role = require('../middlewares/roleMiddleware');
+const checkOng = require('../middlewares/ongMatchMiddleware');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -24,6 +25,12 @@ router.post('/', auth, role(['doctor']), async (req, res) => {
   try {
     const { patientId } = req.body;
     if (!patientId) return res.status(400).json({ error: 'Missing patientId' });
+
+    const patient = await User.findByPk(patientId);
+    if (!patient || parseInt(patient.ongId) !== parseInt(req.user.ongId)) {
+      return res.status(403).json({ error: 'ONG mismatch' });
+    }
+
     await DoctorPatient.findOrCreate({
       where: { doctorId: req.user.id, patientId },
       defaults: { ongId: req.user.ongId }
@@ -52,6 +59,9 @@ router.put('/:id/use', auth, role(['doctor']), async (req, res) => {
   try {
     const patient = await User.findByPk(req.params.id);
     if (!patient) return res.status(404).json({ error: 'Not found' });
+    if (parseInt(patient.ongId) !== parseInt(req.user.ongId)) {
+      return res.status(403).json({ error: 'ONG mismatch' });
+    }
     patient.authorizedUse = req.body.authorizedUse;
     await patient.save();
     res.json(patient);
@@ -67,6 +77,10 @@ router.post('/medical-docs', auth, role(['doctor']), upload.single('file'), asyn
     const { patientId, title } = req.body;
     if (!patientId || !req.file || !title) {
       return res.status(400).json({ error: 'Missing fields' });
+    }
+    const patient = await User.findByPk(patientId);
+    if (!patient || parseInt(patient.ongId) !== parseInt(req.user.ongId)) {
+      return res.status(403).json({ error: 'ONG mismatch' });
     }
     const doc = await MedicalDoc.create({
       doctorId: req.user.id,
