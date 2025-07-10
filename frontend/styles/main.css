@@ -1,0 +1,1489 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+*{
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    color: black;
+    font-family: "Work Sans", serif;
+    font-weight: 500;
+    scroll-behavior: smooth;
+}
+a,img{
+    cursor: pointer;
+    
+}
+
+::-webkit-scrollbar{
+    display: none;
+}
+.logo,.accama,.accama h1{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    
+}
+.accma{
+    display: flex;
+    align-items: center;
+}
+header{
+    padding: .1% 1% .2% 1%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    box-shadow:  .5px 7px 100px 10px black;
+    position: fixed;
+    width: 98vw;
+    background-color: white;
+    z-index: 5 !important;
+    nav{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+    }
+    nav a{
+        font-size: 1.2rem;
+        padding-left: 10px;
+        padding-right: 30px;
+    }
+    nav a:hover{
+        transform: scale(1.05);
+        transition: 0.5s all ease;
+        text-decoration: underline;
+    }
+}
+header h1{
+    padding-right: 5px;
+}
+.mainhero{
+    height: 100vh;
+    display: flex;
+    z-index: -1;
+    align-items: center;
+    justify-content: center;
+    .centro{
+        padding: 1.4%;
+        background: rgba(255, 255, 255, 0.01); /* Fondo translúcido */
+        backdrop-filter: blur(3px); /* Efecto de vidrio */
+        text-align: center;
+        justify-items: center;
+        
+    }
+}
+.centro h2{
+    font-size: 3.5rem;
+}
+.centro p{
+    font-size: 1.8rem;
+
+}
+.centro img{
+    width: 45vh;
+}
+.arrowdiv img{
+    animation: breathing 2s infinite ease-in-out;
+    
+}
+.arrowdiv{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top:50vh;
+}
+.centro{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1;
+}
+.scrolled {
+    opacity: 0 !important;
+    transition: all 0.5s ease-out;
+   }
+.des {
+    position: relative;
+    right: 30%;
+    transition: all 1s ease-out;
+    animation: des 3s ease-in-out;
+}
+
+.linea {
+    display: block;
+    width: 70%;
+    height: 2px; /* Grosor de la línea */
+    background-color: #000; /* Color de la línea */
+    margin: 20px auto; /* Centrar horizontalmente */
+    margin-bottom: 3%;
+}
+.lineafina {
+    display: block;
+    width: 50%;
+    height: 2px; /* Grosor de la línea */
+    background-color: rgba(0, 0, 0, 0.1); /* Color de la línea */
+    margin: 20px auto; /* Centrar horizontalmente */
+    margin-bottom: 3%;
+}
+
+/*  ------------------------- SECTION 1 --------------------- */
+
+
+/*  ------------------------- contacto Section --------------------- */
+.contactodiv p{
+    width: 60%;
+    text-align: center;
+    line-height: 170%;
+    margin: 3% auto;
+}
+/*  ------------------------- contacto FORM --------------------- */
+.form-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form-container h2 {
+    margin-bottom: 20px;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #000;
+    padding: 3% 20%;
+}
+.form-container input, .form-container select {
+    padding: 10%;
+    margin: 10% 0;
+    width: 160%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.form-container select{
+    padding: 10% ;
+    width: 180%;
+}
+.form-container button {
+    width: 100%;
+    margin: 5%;
+    padding: 8%;
+    background-color: green;    
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.form-container button:hover {
+    background-color: rgb(14, 170, 53);
+}
+/*  ------------------------- contacto FORM --------------------- */
+/*  ------------------------- Footer --------------------- */
+footer,.footerdata{
+    background-color: #202020;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+footer{flex-direction: column;}
+.contenido{
+    width: 70vw;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.footerdata{
+    align-items: center;
+}
+footer p,footer a{
+    color: white;
+    text-align: center;
+}
+.footerlinks svg{
+    width: 15%;
+    margin: 2.5%;
+}
+
+/* Estilos para los mensajes de éxito y error */
+.success-message,
+.error-message {
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Mejora de estilos para el formulario */
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-container input,
+.form-container select,
+.form-container textarea {
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-container input:focus,
+.form-container select:focus,
+.form-container textarea:focus {
+    border-color: #4caf50;
+    outline: none;
+}
+
+.form-container button {
+    padding: 12px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-container button:hover {
+    background-color: #3e8e41;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 20px 10px;
+    }
+}
+
+/*  ------------------------- Animaciones --------------------- */
+@keyframes des {
+    0% {
+       right: 0%;
+        
+    }
+    50% {
+        right:35% ;
+    }
+    100% {
+        right: 30% ;
+
+    }
+}
+.appear {
+    opacity: 1 !important;
+    transition: opacity 1.5s ease-in;
+    animation: fadeIn 1.5s ease-in;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes breathing {
+    0% {
+        transform: scale(.3);
+        opacity: 0.8;
+        
+    }
+    50% {
+        align-items: center;
+        transform: scale(.4);
+        opacity: 1;
+    }
+    100% {
+        align-items: center;
+        transform: scale(.3);
+        opacity: 0.6;
+    }
+}
+
+/* Modernized About Us Section */
+.sobreusdiv {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3% 0;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: #4a8f3a;
+}
+
+/* Redesigned cards for About Us section */
+.about-card {
+    display: flex;
+    margin-bottom: 5rem;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.about-image {
+    flex: 1;
+    min-height: 400px;
+    position: relative;
+    overflow: hidden;
+}
+
+.about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.about-card:hover .about-image img {
+    transform: scale(1.05);
+}
+
+.about-content {
+    flex: 1;
+    padding: 3rem;
+}
+
+.about-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.about-content h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background-color: #4a8f3a;
+}
+
+.about-content p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+/* Activities Section */
+.activities-section {
+    background-color: #f9f9f9;
+    padding: 5% 0;
+}
+
+.activities-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.activities-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 3rem;
+}
+
+.activity-card {
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.activity-card:hover {
+    transform: translateY(-10px);
+}
+
+.activity-image {
+    height: 200px;
+    overflow: hidden;
+}
+
+.activity-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.activity-card:hover .activity-image img {
+    transform: scale(1.1);
+}
+
+.activity-content {
+    padding: 1.5rem;
+}
+
+.activity-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.activity-content p {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+
+   @media (max-width: 768px) {
+    .mobile-carousel-container {
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .mobile-carousel {
+        display: flex;
+        gap: 20px;
+        transition: transform 0.3s ease;
+        width: 100%;
+    }
+
+    .mobile-carousel .product-card {
+        flex: 0 0 calc(50% - 10px);
+        transition: all 0.3s ease;
+        transform-origin: center;
+        align-items: center;
+    }
+
+    .mobile-carousel .main-card {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .mobile-carousel-nav {
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+    }
+
+    .mobile-carousel-dot {
+        width: 10px;
+        height: 10px;
+        background-color: #ccc;
+        border-radius: 50%;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .mobile-carousel-dot.active {
+        background-color: #333;
+        width: 15px;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-carousel-container,
+    .mobile-carousel-nav {
+        display: none !important;
+    }
+}
+
+
+
+.product-image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.product-carousel {
+    position: relative;
+    overflow: hidden;
+    padding: 0 20px;
+    margin: 3rem auto;
+}
+
+.products-track {
+    display: flex;
+    gap: 30px;
+}
+
+.product-card {
+    flex: 0 0 calc(20% - 15px);
+    min-width: calc(20% - 10%);
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+.product-content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 4%;
+}
+.consultar-btn:hover{
+    transform: scale(1.1);
+    transition: all 1s ease;
+    a{
+        font-weight: 300;
+        color: white;
+    }
+    background-color: #000;
+}
+
+.consultar-btn{
+    padding: 15%; margin-top: 12%; margin-bottom: 20%; border: solid 1px black ; border-radius: 10px; text-align: center;
+}
+
+
+/* Estilos para el slider personalizado */
+.slider-container {
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.slider-track {
+    position: relative;
+    width: 80%;
+    height: 8px;
+    background: #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.slider-thumb {
+    position: absolute;
+    top: -90%;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    transform: translate(0, -50%);
+    cursor: grab;
+    z-index: 2;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slider-thumb img {
+    width: 120%;
+    height: 170%;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.slider-thumb:active {
+    cursor: grabbing;
+}
+
+.slider-thumb:active {
+    cursor: grabbing;
+}
+
+/* Responsive */
+
+@media only screen and (max-width: 992px) {
+    .product-card {
+        flex: 0 0 calc(50% - 15px);
+        min-width: calc(50% - 15px);
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .product-card {
+        flex: 0 0 calc(100% - 10px);
+        min-width: calc(100% - 10px);
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .menud{
+        display: flex !important;
+    }
+    nav a{
+        display: none;
+    }
+    main{
+        margin:0 2.5%;
+    }
+    .accama h1{
+        padding-left: 10%;
+    }
+    header{
+        box-shadow: 0px -30px 80px black;
+    }
+    nav {
+        display: none !important;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 100%;
+        background: white;
+        box-shadow: 0 -34px 60px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+    }
+    .centro{
+        display: flex;
+        justify-content: center;
+        z-index: 1 !important;
+        margin: 4%;
+    }
+    .centro h2{
+        margin-bottom: 3%;
+    }
+   .accama{
+    align-items: center;
+   }
+   .centro p{
+    text-align: center;
+   }
+   .menud{
+    margin-right: 8%;
+   }
+   .arrowdiv{
+    margin-top: 85vh !important;
+    
+    justify-content: center;
+
+   }
+
+    .about-card{
+        display: flex;
+        flex-direction: column-reverse;
+    }
+   .about-image{
+    margin: 1rem auto;
+    width: 90%;
+    border-radius: 4px;
+   }
+}
+/* Base product carousel styles */
+.product-carousel {
+    position: relative;
+    overflow: hidden;
+    padding: 0 20px;
+    margin: 3rem auto;
+    max-width: 1200px;
+}
+
+/* Desktop carousel styles */
+.products-track {
+    display: flex;
+    gap: 30px;
+}
+
+.product-card {
+    flex: 0 0 calc(20% - 24px);
+    min-width: 250px;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 15px;
+    margin: 10px 0;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.product-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.product-image img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.product-content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 4%;
+    text-align: center;
+}
+
+.product-content h3 {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.consultar-btn {
+    padding: 12px;
+    margin-top: 15px;
+    border: solid 1px black;
+    border-radius: 10px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.consultar-btn:hover {
+    transform: scale(1.05);
+    background-color: #000;
+}
+
+.consultar-btn:hover a {
+    color: white;
+    font-weight: 500;
+}
+
+.consultar-btn a {
+    text-decoration: none;
+    color: #000;
+    display: block;
+    width: 100%;
+    transition: color 0.3s ease;
+}
+
+/* Slider styles */
+.slider-container {
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.slider-track {
+    position: relative;
+    width: 80%;
+    height: 8px;
+    background: #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.slider-thumb {
+    position: absolute;
+    top: -10px;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    transform: translateY(-50%);
+    cursor: grab;
+    z-index: 2;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slider-thumb img {
+    width: 30px;
+    height: 30px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.slider-thumb:active {
+    cursor: grabbing;
+}
+
+/* Mobile carousel styles */
+.mobile-carousel-container {
+    width: 100%;
+    position: relative;
+}
+
+.mobile-carousel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 450px;
+    width: 100%;
+}
+
+.mobile-card {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 320px;
+    padding: 15px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    background-color: white;
+}
+
+.mobile-card .product-image {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mobile-card .product-image img {
+    max-height: 180px;
+    width: auto;
+    object-fit: contain;
+}
+
+.mobile-card .product-content {
+    text-align: center;
+    padding: 15px 10px;
+}
+
+.mobile-card .product-content h3 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-carousel-nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px 0;
+}
+
+.mobile-carousel-dot {
+    width: 12px;
+    height: 12px;
+    background-color: #ddd;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.mobile-carousel-dot.active {
+    background-color: #333;
+}
+
+.mobile-carousel-dot.disabled-dot {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .product-carousel {
+        padding: 0 10px;
+    }
+    
+    .mobile-carousel {
+        min-height: 400px;
+    }
+    
+    .mobile-card {
+        max-width: 280px;
+    }
+    
+    .mobile-card .product-image {
+        height: 160px;
+    }
+    
+    .mobile-card .consultar-btn {
+        padding: 10px;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mobile-card {
+        max-width: 240px;
+    }
+    
+    .mobile-card .product-image {
+        height: 140px;
+    }
+    
+    .mobile-carousel-dot {
+        width: 10px;
+        height: 10px;
+    }
+}
+
+/* Estilos mejorados para el carrusel móvil */
+.mobile-carousel-container {
+    width: 100%;
+    position: relative;
+    padding: 20px 0;
+}
+
+.mobile-carousel {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 450px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.visible-cards-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+/* Estilos para las tarjetas */
+.mobile-card {
+    position: relative;
+    padding: 15px;
+    margin: 0 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    background-color: white;
+    transition: all 0.5s ease;
+}
+
+/* Tarjeta principal (actual) */
+.mobile-card.main-card {
+    z-index: 10;
+    transform: scale(0.95);
+    opacity: 0.9;
+    max-width: 280px;
+    width: 100%;
+}
+
+/* Animación de entrada para la tarjeta principal */
+.mobile-card.main-card.active {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Tarjetas laterales (anterior y siguiente) */
+.mobile-card.prev-card,
+.mobile-card.next-card {
+    position: absolute;
+    z-index: 5;
+    transform: scale(0.7);
+    opacity: 0.6;
+    filter: blur(1px);
+    max-width: 240px;
+    width: 80%;
+    pointer-events: none;
+}
+
+.mobile-card.prev-card {
+    left: -15%;
+}
+
+.mobile-card.next-card {
+    right: -15%;
+}
+
+/* Ajustes para componentes internos de tarjetas */
+.mobile-card .product-image {
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.mobile-card .product-image img {
+    max-height: 160px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.mobile-card.main-card:hover .product-image img {
+    transform: scale(1.1);
+}
+
+.mobile-card .product-content {
+    text-align: center;
+    padding: 15px 10px;
+}
+
+.mobile-card .product-content h3 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estilos para puntos de navegación */
+.mobile-carousel-nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px 0;
+}
+
+.mobile-carousel-dot {
+    width: 12px;
+    height: 12px;
+    background-color: #ddd;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mobile-carousel-dot.active {
+    background-color: #333;
+    transform: scale(1.2);
+}
+
+/* Botones de navegación */
+.mobile-carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid #ddd;
+    color: #333;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 20;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-carousel-button:hover {
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mobile-carousel-button.prev-button {
+    left: 10px;
+}
+
+.mobile-carousel-button.next-button {
+    right: 10px;
+}
+
+/* Responsividad */
+@media (max-width: 480px) {
+    .mobile-card.main-card {
+        max-width: 240px;
+    }
+    
+    .mobile-card.prev-card,
+    .mobile-card.next-card {
+        max-width: 200px;
+        opacity: 0.4;
+    }
+    
+    .mobile-card.prev-card {
+        left: -10%;
+    }
+    
+    .mobile-card.next-card {
+        right: -10%;
+    }
+    
+    .mobile-card .product-image {
+        height: 140px;
+    }
+    
+    .mobile-carousel-button {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+}
+
+
+/* Main container for circular carousel */
+.circular-carousel-container {
+    position: relative;
+    transform: scale();
+    width: 100%;
+    height: 60vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+}
+
+/* Track that holds all the cards */
+.circular-carousel-track {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    transform-style: preserve-3d;
+    will-change: transform;
+    user-select: none;
+}
+
+/* Individual card styling */
+.circular-card {
+    position: absolute;
+    left: 19.8%;
+    /* top: 50%; */
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 300px;
+    height: auto;
+    cursor: grab;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+    background: white;
+    will-change: transform, opacity, z-index;
+    overflow: hidden;
+}
+
+.circular-card:active {
+    cursor: grabbing;
+}
+
+/* Center card special styling */
+.circular-card[data-position="0"] {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    z-index: 100 !important;
+}
+
+/* Navigation buttons */
+.circular-carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 200;
+    transition: background 0.3s ease;
+}
+
+.circular-carousel-button:hover {
+    background: white;
+}
+
+.prev-button {
+    left: 10px;
+}
+
+.next-button {
+    right: 10px;
+}
+
+/* Make cards further from center partially transparent and scaled down */
+.circular-card:not([data-position="0"]) {
+    filter: brightness(0.9);
+}
+
+/* 3D effect for cards */
+.circular-carousel-container {
+    perspective: 1200px;
+}
+
+/* Ensure product images resize appropriately */
+.circular-card .product-image img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    max-height: 200px;
+}
+
+/* Optimize product content to fit nicer in carousel */
+.circular-card .product-content {
+    padding: 15px;
+}
+
+.circular-card .product-content h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.circular-card .consultar-btn {
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Active card treatment for better highlight */
+.circular-card[data-position="0"]:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(to right, #4CAF50, #8BC34A);
+}
+
+/* Disable scrolling when dragging */
+body.carousel-dragging {
+    overflow: hidden;
+}
+.a2{
+    color: white;
+    background-color: #4a8f3a;
+    font-weight: 300;
+    padding: .9%;
+    position: absolute;
+    right: 15.3%;
+    top: 100%;
+    z-index: 12300;
+}
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    html{
+        font-size: 12px;
+    
+       
+    }
+    .circular-card[data-position="0"] {
+        transform: translateX(-20%) scale(.9) !important;
+    }
+    .form-container input, .form-container select {
+        padding: 9%;
+        margin: 10% 0;
+        width: 135%;
+    }
+    .centro img {
+        width: 40vh;
+    }
+    .about-image{
+        width: 70%;
+    
+    }
+    header{
+        padding: 3% 0;
+        width: 100%;
+    }
+    .about-content{
+        padding: 2rem 3rem ;
+    }
+    .about-card{
+        padding-bottom: 3.2rem;
+    }
+    .about-content p{
+        padding: 1.8rem 0;
+        font-size: 1.4rem;
+        line-height: 230%;
+    }
+    
+    .circular-carousel-button {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+   
+    .activities-grid{
+        display: flex;
+        flex-direction:  column;
+    }
+    .section-title{
+        font-size: 2rem ;
+        margin: 12% auto ;
+    }
+    .activities-section{
+        padding: 0 2rem;
+    }
+    .a2{
+        top:102.9%;
+        right: 6%;
+        scale: 1.25;
+    }
+}
+@media (max-width: 120px) {
+  
+}
+
+/* Standardize cards across all carousel types */
+.product-card, .circular-card, .mobile-card {
+  width: 280px;
+  height: 420px;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  background-color: white;
+}
+
+/* Standardize the product image container */
+.product-image {
+  height: 200px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+/* Standardize the product images */
+.product-image img {
+  max-height: 180px;
+  max-width: 90%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+/* Standardize the product content */
+.product-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 10px;
+}
+
+/* Standardize product titles */
+.product-content h3 {
+  height: 50px;
+  margin: 0 0 15px 0;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Standardize consultar button */
+.consultar-btn {
+  width: 120px;
+  height: 40px;
+  padding: 0;
+  margin: 15px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: solid 1px black;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.consultar-btn a {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #000;
+}
+
+/* Special adjustments for circular carousel cards */
+
+.circular-card .product-image,
+.circular-card .product-content,
+.circular-card .consultar-btn {
+  transform: none;
+}
+
+/* Adjustments for mobile carousel cards */
+.mobile-card.main-card {
+  width: 280px !important;
+  max-width: 280px !important;
+}
+
+.mobile-card .product-image,
+.mobile-card .product-content,
+.mobile-card .consultar-btn {
+  transform: none;
+}
