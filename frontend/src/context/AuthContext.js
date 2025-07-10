@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState } from 'react';
 import { parseJwt } from '../utils/jwt';
 
 export const AuthContext = createContext({
@@ -10,8 +10,13 @@ export const AuthContext = createContext({
 });
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(null);
-  const [role, setRole] = useState(null);
+  const [token, setToken] = useState(() => localStorage.getItem('token'));
+  const [role, setRole] = useState(() => {
+    const stored = localStorage.getItem('token');
+    if (!stored) return null;
+    const payload = parseJwt(stored);
+    return payload?.role || null;
+  });
 
   const login = (newToken, newRole) => {
     setToken(newToken);
@@ -31,12 +36,11 @@ export function AuthProvider({ children }) {
       setToken(stored);
       const payload = parseJwt(stored);
       setRole(payload?.role || null);
+    } else {
+      setToken(null);
+      setRole(null);
     }
   };
-
-  useEffect(() => {
-    loadFromStorage();
-  }, []);
 
   return (
     <AuthContext.Provider value={{ token, role, login, logout, loadFromStorage }}>
