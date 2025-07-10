@@ -9,7 +9,8 @@ const role = require('../middlewares/roleMiddleware');
 // Create withdrawal request
 router.post('/', auth, async (req, res) => {
   try {
-    const { amount, variety, ongId, reason } = req.body;
+    const { amount, variety, reason } = req.body;
+    const ongId = req.user.ongId;
     if (!amount || !variety || !ongId) {
       return res.status(400).json({ error: 'Missing fields' });
     }
@@ -69,11 +70,11 @@ router.get('/', auth, async (req, res) => {
 
     if (req.user.role !== 'admin') {
       where.userId = req.user.id;
-    } else if (userId) {
-      where.userId = userId;
+      where.ongId = req.user.ongId;
+    } else {
+      if (userId) where.userId = userId;
+      if (ongId) where.ongId = ongId;
     }
-
-    if (ongId) where.ongId = ongId;
     if (status) where.status = status;
 
     const result = await Withdrawal.findAndCountAll({
