@@ -4,12 +4,15 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 const { User, Role } = require('../models');
+const auth = require('../middlewares/authMiddleware');
+const role = require('../middlewares/roleMiddleware');
+const checkOng = require('../middlewares/ongMatchMiddleware');
 
 // User registration
-router.post('/register', async (req, res) => {
+router.post('/register', auth, role(['admin']), checkOng('ongId'), async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
-    if (!name || !email || !password || !role) {
+    const { name, email, password, role: roleName, ongId } = req.body;
+    if (!name || !email || !password || !roleName || !ongId) {
       return res.status(400).json({ error: 'Missing fields' });
     }
 
@@ -18,7 +21,7 @@ router.post('/register', async (req, res) => {
       return res.status(409).json({ error: 'Email already registered' });
     }
 
-    const roleRecord = await Role.findOne({ where: { name: role } });
+    const roleRecord = await Role.findOne({ where: { name: roleName } });
     if (!roleRecord) {
       return res.status(400).json({ error: 'Invalid role' });
     }
@@ -30,6 +33,7 @@ router.post('/register', async (req, res) => {
       email,
       password: hashedPassword,
       roleId: roleRecord.id,
+      ongId,
     });
 
     const token = jwt.sign(
