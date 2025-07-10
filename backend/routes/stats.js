@@ -4,17 +4,24 @@ const { sequelize, Withdrawal, Stock } = require('../models');
 const { Op } = require('sequelize');
 const auth = require('../middlewares/authMiddleware');
 const role = require('../middlewares/roleMiddleware');
+const checkOng = require('../middlewares/ongMatchMiddleware');
 const PDFDocument = require('pdfkit');
 const { createObjectCsvStringifier } = require('csv-writer');
 
 // Withdrawals by month
-router.get('/withdrawals/monthly', auth, role(['admin']), async (req, res) => {
+router.get('/withdrawals/monthly', auth, role(['admin', 'admin_ong']), checkOng('ongId'), async (req, res) => {
   try {
+    const where = {};
+    if (req.user.role !== 'admin') {
+      where.ongId = req.user.ongId;
+    }
+
     const data = await Withdrawal.findAll({
       attributes: [
         [sequelize.fn('DATE_FORMAT', sequelize.col('date'), '%Y-%m'), 'month'],
         [sequelize.fn('COUNT', sequelize.col('id')), 'count']
       ],
+      where,
       group: [sequelize.fn('DATE_FORMAT', sequelize.col('date'), '%Y-%m')],
       order: [[sequelize.fn('DATE_FORMAT', sequelize.col('date'), '%Y-%m'), 'ASC']],
       raw: true
@@ -27,10 +34,16 @@ router.get('/withdrawals/monthly', auth, role(['admin']), async (req, res) => {
 });
 
 // Stock remaining by variety
-router.get('/stock', auth, role(['admin']), async (req, res) => {
+router.get('/stock', auth, role(['admin', 'admin_ong']), checkOng('ongId'), async (req, res) => {
   try {
+    const where = {};
+    if (req.user.role !== 'admin') {
+      where.ongId = req.user.ongId;
+    }
+
     const data = await Stock.findAll({
       attributes: ['variety', [sequelize.fn('SUM', sequelize.col('quantity')), 'total']],
+      where,
       group: ['variety'],
       raw: true
     });
@@ -42,9 +55,14 @@ router.get('/stock', auth, role(['admin']), async (req, res) => {
 });
 
 // Active users (users with at least one withdrawal)
-router.get('/users/active', auth, role(['admin']), async (req, res) => {
+router.get('/users/active', auth, role(['admin', 'admin_ong']), checkOng('ongId'), async (req, res) => {
   try {
-    const count = await Withdrawal.count({ distinct: true, col: 'userId' });
+    const where = {};
+    if (req.user.role !== 'admin') {
+      where.ongId = req.user.ongId;
+    }
+
+    const count = await Withdrawal.count({ where, distinct: true, col: 'userId' });
     res.json({ activeUsers: count });
   } catch (err) {
     console.error(err);
@@ -53,17 +71,22 @@ router.get('/users/active', auth, role(['admin']), async (req, res) => {
 });
 
 // Export reports
-router.get('/export/:type/:format', auth, role(['admin']), async (req, res) => {
+router.get('/export/:type/:format', auth, role(['admin', 'admin_ong']), checkOng('ongId'), async (req, res) => {
   try {
     const { type, format } = req.params;
     let data;
 
+    const where = {};
+    if (req.user.role !== 'admin') {
+      where.ongId = req.user.ongId;
+    }
+
     if (type === 'withdrawals') {
-      data = await Withdrawal.findAll({ raw: true });
+      data = await Withdrawal.findAll({ where, raw: true });
     } else if (type === 'stock') {
-      data = await Stock.findAll({ raw: true });
+      data = await Stock.findAll({ where, raw: true });
     } else if (type === 'active-users') {
-      const count = await Withdrawal.count({ distinct: true, col: 'userId' });
+      const count = await Withdrawal.count({ where, distinct: true, col: 'userId' });
       data = [{ activeUsers: count }];
     } else {
       return res.status(400).json({ error: 'Invalid type' });
