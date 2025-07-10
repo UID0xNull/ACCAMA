@@ -24,7 +24,10 @@ router.post('/', auth, role(['doctor']), async (req, res) => {
   try {
     const { patientId } = req.body;
     if (!patientId) return res.status(400).json({ error: 'Missing patientId' });
-    await DoctorPatient.findOrCreate({ where: { doctorId: req.user.id, patientId } });
+    await DoctorPatient.findOrCreate({
+      where: { doctorId: req.user.id, patientId },
+      defaults: { ongId: req.user.ongId }
+    });
     res.sendStatus(201);
   } catch (err) {
     console.error(err);
@@ -70,6 +73,7 @@ router.post('/medical-docs', auth, role(['doctor']), upload.single('file'), asyn
       patientId,
       title,
       path: req.file.filename,
+      ongId: req.user.ongId,
     });
     res.status(201).json(doc);
   } catch (err) {

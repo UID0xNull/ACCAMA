@@ -17,10 +17,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
+    ongId: {
+      type: DataTypes.INTEGER,
+    },
   });
 
   LegalRecord.associate = models => {
     LegalRecord.belongsTo(models.User, { as: 'Patient', foreignKey: 'patientId' });
+    LegalRecord.belongsTo(models.ONG, { foreignKey: 'ongId' });
   };
 
   return LegalRecord;

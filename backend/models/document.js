@@ -13,10 +13,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    ongId: {
+      type: DataTypes.INTEGER,
+    },
   });
 
   Document.associate = models => {
     Document.belongsTo(models.User, { foreignKey: 'userId' });
+    Document.belongsTo(models.ONG, { foreignKey: 'ongId' });
   };
 
   return Document;
