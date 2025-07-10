@@ -5,14 +5,19 @@ const { User, Role } = require('../models');
 const auth = require('../middlewares/authMiddleware');
 const role = require('../middlewares/roleMiddleware');
 
-// List users with filters and pagination (admin only)
-router.get('/', auth, role(['admin_ong']), async (req, res) => {
+// List users with filters and pagination
+router.get('/', auth, role(['admin', 'admin_ong']), async (req, res) => {
   try {
-    const { page = 1, limit = 10, name, email, roleId } = req.query;
+    const { page = 1, limit = 10, name, email, roleId, ongId } = req.query;
     const where = {};
     if (name) where.name = { [Op.like]: `%${name}%` };
     if (email) where.email = { [Op.like]: `%${email}%` };
     if (roleId) where.roleId = roleId;
+    if (req.user.role !== 'admin') {
+      where.ongId = req.user.ongId;
+    } else if (ongId) {
+      where.ongId = ongId;
+    }
 
     const result = await User.findAndCountAll({
       where,
