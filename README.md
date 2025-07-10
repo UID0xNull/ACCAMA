@@ -67,3 +67,15 @@ Asegúrate de que `REACT_APP_API_URL` apunte a la URL del backend.
 ### Documentación legal
 1. Un médico sube archivos mediante `POST /legal-records`.
 2. Cualquier usuario autenticado puede consultar los registros con `GET /legal-records/:patientId`.
+
+## Ejecutar con Docker
+
+Para levantar todo el entorno (base de datos, backend y frontend) se utiliza `docker-compose`:
+
+```bash
+docker-compose build
+docker-compose up
+```
+
+El frontend quedará disponible en `http://localhost:3001` y el backend en `http://localhost:3000`.
+

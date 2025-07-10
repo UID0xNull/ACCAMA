@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  db:
+    image: mariadb:10
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: accama
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - app
+
+  backend:
+    build: ./backend
+    environment:
+      PORT: 3000
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: accama
+      DB_USER: root
+      DB_PASSWORD: root
+      JWT_SECRET: changeme
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    networks:
+      - app
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        REACT_APP_API_URL: http://backend:3000
+    depends_on:
+      - backend
+    ports:
+      - "3001:80"
+    networks:
+      - app
+
+volumes:
+  db-data:
+
+networks:
+  app:
+
