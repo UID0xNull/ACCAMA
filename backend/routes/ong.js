@@ -41,8 +41,8 @@ router.get('/', auth, role(['admin']), async (req, res) => {
   }
 });
 
-// Register ONG
-router.post('/', upload.fields([{ name: 'statute', maxCount: 1 }, { name: 'documents', maxCount: 1 }]), async (req, res) => {
+// Register ONG (admin only)
+router.post('/', auth, role(['admin']), upload.fields([{ name: 'statute', maxCount: 1 }, { name: 'documents', maxCount: 1 }]), async (req, res) => {
   try {
     const { name, description, phone, email, address } = req.body;
     const statute = req.files['statute'] ? req.files['statute'][0].filename : null;

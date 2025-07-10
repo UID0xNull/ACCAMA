@@ -27,9 +27,12 @@ cd backend
 npm install
 npm run sync-db
 npm run seed-roles
+npm run seed-admin
 npm start
 ```
 El script `npm run seed-roles` crea los roles básicos en la base de datos.
+`npm run seed-admin` agrega un usuario administrador por defecto
+(`admin@example.com` / `admin123`).
 
 ## Iniciar el frontend
 
