@@ -24,10 +24,14 @@ module.exports = (sequelize, DataTypes) => {
     legalStatus: {
       type: DataTypes.STRING,
     },
+    ongId: {
+      type: DataTypes.INTEGER,
+    },
   });
 
   User.associate = models => {
     User.belongsTo(models.Role, { foreignKey: 'roleId' });
+    User.belongsTo(models.ONG, { foreignKey: 'ongId' });
     User.hasMany(models.Document, { foreignKey: 'userId' });
     User.hasMany(models.Withdrawal, { foreignKey: 'userId' });
     User.belongsToMany(models.User, {

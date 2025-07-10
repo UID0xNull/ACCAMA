@@ -35,6 +35,11 @@ module.exports = (sequelize, DataTypes) => {
 
   ONG.associate = models => {
     ONG.hasMany(models.Withdrawal, { foreignKey: 'ongId' });
+    ONG.hasMany(models.User, { foreignKey: 'ongId' });
+    ONG.hasMany(models.Document, { foreignKey: 'ongId' });
+    ONG.hasMany(models.MedicalDoc, { foreignKey: 'ongId' });
+    ONG.hasMany(models.LegalRecord, { foreignKey: 'ongId' });
+    ONG.hasMany(models.DoctorPatient, { foreignKey: 'ongId' });
   };
 
   return ONG;

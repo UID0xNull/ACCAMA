@@ -32,6 +32,7 @@ router.post('/', auth, role(['doctor']), upload.single('file'), async (req, res)
       type,
       date: date || new Date(),
       path: req.file ? req.file.filename : null,
+      ongId: req.user.ongId,
     });
 
     const patient = await User.findByPk(patientId);
