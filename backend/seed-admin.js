@@ -5,8 +5,9 @@ const { User, Role, sequelize } = require('./models');
 (async () => {
   try {
     const adminRole = await Role.findOne({ where: { name: 'admin' } });
-    if (!adminRole) {
-      console.error("Rol 'admin' no encontrado. Ejecuta primero seed-roles.");
+    const adminOngRole = await Role.findOne({ where: { name: 'admin_ong' } });
+    if (!adminRole || !adminOngRole) {
+      console.error("Roles requeridos no encontrados. Ejecuta primero seed-roles.");
       return;
     }
 
@@ -24,6 +25,25 @@ const { User, Role, sequelize } = require('./models');
       console.log("Usuario administrador creado: admin@example.com / admin123");
     } else {
       console.log('El usuario administrador ya existe');
+    }
+
+    const hashedAdminOngPassword = await bcrypt.hash('adminong123', 10);
+    const [adminOng, adminOngCreated] = await User.findOrCreate({
+      where: { email: 'admin_ong@example.com' },
+      defaults: {
+        name: 'Admin ONG',
+        password: hashedAdminOngPassword,
+        roleId: adminOngRole.id,
+        ongId: 1,
+      },
+    });
+
+    if (adminOngCreated) {
+      console.log(
+        "Usuario admin_ong creado: admin_ong@example.com / adminong123"
+      );
+    } else {
+      console.log('El usuario admin_ong ya existe');
     }
   } catch (err) {
     console.error('Error al crear usuario administrador:', err);

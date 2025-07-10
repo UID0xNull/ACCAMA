@@ -31,8 +31,9 @@ npm run seed-admin
 npm start
 ```
 El script `npm run seed-roles` crea los roles básicos en la base de datos.
-`npm run seed-admin` agrega un usuario administrador por defecto
-(`admin@example.com` / `admin123`).
+`npm run seed-admin` agrega usuarios de ejemplo:
+- Administrador global (`admin@example.com` / `admin123`)
+- Administrador de ONG (`admin_ong@example.com` / `adminong123`).
 
 ## Iniciar el frontend
 
@@ -45,7 +46,8 @@ Asegúrate de que `REACT_APP_API_URL` apunte a la URL del backend.
 ```
 
 ## Roles
-- **Admin**: gestiona usuarios, aprueba o rechaza ONGs y retiros y accede a las estadísticas del sistema.
+- **Admin**: gestiona ONGs y accede a las estadísticas globales del sistema.
+- **Admin ONG**: administra los usuarios y retiros de su propia ONG.
 - **Doctor**: administra sus pacientes, puede asociarlos y subir documentos médicos y legales.
 - **Legal**: consulta los registros legales cargados.
 - **Paciente**: accede a su área personal y puede solicitar retiros.

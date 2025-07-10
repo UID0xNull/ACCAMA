@@ -3,7 +3,7 @@ const { Role, sequelize } = require('./models');
 
 (async () => {
   try {
-    const basicRoles = ['admin', 'doctor', 'legal', 'paciente'];
+    const basicRoles = ['admin', 'doctor', 'legal', 'paciente', 'admin_ong'];
     for (const name of basicRoles) {
       const [role, created] = await Role.findOrCreate({ where: { name } });
       if (created) {

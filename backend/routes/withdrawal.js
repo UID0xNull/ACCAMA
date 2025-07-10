@@ -40,7 +40,7 @@ router.post('/', auth, checkOng('ongId'), async (req, res) => {
 });
 
 // Update withdrawal status (admin only)
-router.put('/:id', auth, role(['admin']), async (req, res) => {
+router.put('/:id', auth, role(['admin_ong']), async (req, res) => {
   try {
     const { status } = req.body;
     const withdrawal = await Withdrawal.findByPk(req.params.id);
@@ -72,7 +72,7 @@ router.get('/', auth, checkOng('ongId'), async (req, res) => {
     const { page = 1, limit = 10, status, userId, ongId } = req.query;
     const where = {};
 
-    if (req.user.role !== 'admin') {
+    if (req.user.role !== 'admin_ong') {
       where.userId = req.user.id;
       where.ongId = req.user.ongId;
     } else {
