@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { Withdrawal, Stock } = require('../models');
-const { Op } = require('sequelize');
+const prisma = require('../prismaClient');
 const auth = require('../middlewares/authMiddleware');
 const role = require('../middlewares/roleMiddleware');
 const checkOng = require('../middlewares/ongMatchMiddleware');
@@ -16,20 +15,24 @@ router.post('/', auth, checkOng('ongId'), async (req, res) => {
       return res.status(400).json({ error: 'Missing fields' });
     }
 
-    const stock = await Stock.findOne({ where: { ongId, variety } });
+    const stock = await prisma.stock.findFirst({ where: { ongId, variety } });
     if (!stock || parseFloat(stock.quantity) < parseFloat(amount)) {
       return res.status(400).json({ error: 'Insufficient stock' });
     }
 
-    stock.quantity = parseFloat(stock.quantity) - parseFloat(amount);
-    await stock.save();
+    await prisma.stock.update({
+      where: { id: stock.id },
+      data: { quantity: stock.quantity - parseFloat(amount) }
+    });
 
-    const withdrawal = await Withdrawal.create({
-      userId: req.user.id,
-      ongId,
-      amount,
-      variety,
-      reason,
+    const withdrawal = await prisma.withdrawal.create({
+      data: {
+        userId: req.user.id,
+        ongId,
+        amount: parseFloat(amount),
+        variety,
+        reason
+      }
     });
 
     res.status(201).json(withdrawal);
@@ -43,23 +46,24 @@ router.post('/', auth, checkOng('ongId'), async (req, res) => {
 router.put('/:id', auth, role(['admin_ong']), async (req, res) => {
   try {
     const { status } = req.body;
-    const withdrawal = await Withdrawal.findByPk(req.params.id);
+    const withdrawal = await prisma.withdrawal.findUnique({ where: { id: parseInt(req.params.id) } });
     if (!withdrawal) return res.status(404).json({ error: 'Not found' });
     if (parseInt(withdrawal.ongId) !== parseInt(req.user.ongId)) {
       return res.status(403).json({ error: 'ONG mismatch' });
     }
 
     if (status === 'rechazado' && withdrawal.status === 'pendiente') {
-      const stock = await Stock.findOne({ where: { ongId: withdrawal.ongId, variety: withdrawal.variety } });
+      const stock = await prisma.stock.findFirst({ where: { ongId: withdrawal.ongId, variety: withdrawal.variety } });
       if (stock) {
-        stock.quantity = parseFloat(stock.quantity) + parseFloat(withdrawal.amount);
-        await stock.save();
+        await prisma.stock.update({
+          where: { id: stock.id },
+          data: { quantity: stock.quantity + withdrawal.amount }
+        });
       }
     }
 
-    withdrawal.status = status;
-    await withdrawal.save();
-    res.json(withdrawal);
+    const updated = await prisma.withdrawal.update({ where: { id: withdrawal.id }, data: { status } });
+    res.json(updated);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
@@ -81,14 +85,17 @@ router.get('/', auth, checkOng('ongId'), async (req, res) => {
     }
     if (status) where.status = status;
 
-    const result = await Withdrawal.findAndCountAll({
-      where,
-      order: [['date', 'DESC']],
-      offset: (parseInt(page) - 1) * parseInt(limit),
-      limit: parseInt(limit)
-    });
+    const [data, total] = await Promise.all([
+      prisma.withdrawal.findMany({
+        where,
+        orderBy: { date: 'desc' },
+        skip: (parseInt(page) - 1) * parseInt(limit),
+        take: parseInt(limit)
+      }),
+      prisma.withdrawal.count({ where })
+    ]);
 
-    res.json({ data: result.rows, total: result.count, page: parseInt(page) });
+    res.json({ data, total, page: parseInt(page) });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });

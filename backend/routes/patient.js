@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 
-const { User, DoctorPatient, MedicalDoc } = require('../models');
+const prisma = require('../prismaClient');
 const auth = require('../middlewares/authMiddleware');
 const role = require('../middlewares/roleMiddleware');
 const checkOng = require('../middlewares/ongMatchMiddleware');
@@ -26,14 +26,15 @@ router.post('/', auth, role(['doctor']), async (req, res) => {
     const { patientId } = req.body;
     if (!patientId) return res.status(400).json({ error: 'Missing patientId' });
 
-    const patient = await User.findByPk(patientId);
+    const patient = await prisma.user.findUnique({ where: { id: parseInt(patientId) } });
     if (!patient || parseInt(patient.ongId) !== parseInt(req.user.ongId)) {
       return res.status(403).json({ error: 'ONG mismatch' });
     }
 
-    await DoctorPatient.findOrCreate({
-      where: { doctorId: req.user.id, patientId },
-      defaults: { ongId: req.user.ongId }
+    await prisma.doctorPatient.upsert({
+      where: { doctorId_patientId: { doctorId: req.user.id, patientId: parseInt(patientId) } },
+      create: { doctorId: req.user.id, patientId: parseInt(patientId), ongId: req.user.ongId },
+      update: {}
     });
     res.sendStatus(201);
   } catch (err) {
@@ -45,7 +46,10 @@ router.post('/', auth, role(['doctor']), async (req, res) => {
 // List patients of the logged doctor
 router.get('/', auth, role(['doctor']), async (req, res) => {
   try {
-    const relations = await DoctorPatient.findAll({ where: { doctorId: req.user.id }, include: [{ model: User, as: 'Patient' }] });
+    const relations = await prisma.doctorPatient.findMany({
+      where: { doctorId: req.user.id },
+      include: { Patient: true }
+    });
     const list = relations.map(r => r.Patient);
     res.json(list);
   } catch (err) {
@@ -57,14 +61,13 @@ router.get('/', auth, role(['doctor']), async (req, res) => {
 // Update authorized use for a patient
 router.put('/:id/use', auth, role(['doctor']), async (req, res) => {
   try {
-    const patient = await User.findByPk(req.params.id);
+    const patient = await prisma.user.findUnique({ where: { id: parseInt(req.params.id) } });
     if (!patient) return res.status(404).json({ error: 'Not found' });
     if (parseInt(patient.ongId) !== parseInt(req.user.ongId)) {
       return res.status(403).json({ error: 'ONG mismatch' });
     }
-    patient.authorizedUse = req.body.authorizedUse;
-    await patient.save();
-    res.json(patient);
+    const updated = await prisma.user.update({ where: { id: patient.id }, data: { authorizedUse: req.body.authorizedUse } });
+    res.json(updated);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
@@ -78,16 +81,18 @@ router.post('/medical-docs', auth, role(['doctor']), upload.single('file'), asyn
     if (!patientId || !req.file || !title) {
       return res.status(400).json({ error: 'Missing fields' });
     }
-    const patient = await User.findByPk(patientId);
+    const patient = await prisma.user.findUnique({ where: { id: parseInt(patientId) } });
     if (!patient || parseInt(patient.ongId) !== parseInt(req.user.ongId)) {
       return res.status(403).json({ error: 'ONG mismatch' });
     }
-    const doc = await MedicalDoc.create({
-      doctorId: req.user.id,
-      patientId,
-      title,
-      path: req.file.filename,
-      ongId: req.user.ongId,
+    const doc = await prisma.medicalDoc.create({
+      data: {
+        doctorId: req.user.id,
+        patientId: parseInt(patientId),
+        title,
+        path: req.file.filename,
+        ongId: req.user.ongId,
+      }
     });
     res.status(201).json(doc);
   } catch (err) {

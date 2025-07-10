@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { sequelize, Withdrawal, Stock } = require('../models');
-const { Op } = require('sequelize');
+const prisma = require('../prismaClient');
 const auth = require('../middlewares/authMiddleware');
 const role = require('../middlewares/roleMiddleware');
 const checkOng = require('../middlewares/ongMatchMiddleware');
@@ -16,16 +15,11 @@ router.get('/withdrawals/monthly', auth, role(['admin', 'admin_ong']), checkOng(
       where.ongId = req.user.ongId;
     }
 
-    const data = await Withdrawal.findAll({
-      attributes: [
-        [sequelize.fn('DATE_FORMAT', sequelize.col('date'), '%Y-%m'), 'month'],
-        [sequelize.fn('COUNT', sequelize.col('id')), 'count']
-      ],
-      where,
-      group: [sequelize.fn('DATE_FORMAT', sequelize.col('date'), '%Y-%m')],
-      order: [[sequelize.fn('DATE_FORMAT', sequelize.col('date'), '%Y-%m'), 'ASC']],
-      raw: true
-    });
+    const condition = where.ongId ? 'WHERE ongId = ?' : '';
+    const data = await prisma.$queryRawUnsafe(
+      `SELECT DATE_FORMAT(date, '%Y-%m') as month, COUNT(id) as count FROM Withdrawal ${condition} GROUP BY month ORDER BY month ASC`,
+      ...(where.ongId ? [where.ongId] : [])
+    );
     res.json(data);
   } catch (err) {
     console.error(err);
@@ -41,12 +35,11 @@ router.get('/stock', auth, role(['admin', 'admin_ong']), checkOng('ongId'), asyn
       where.ongId = req.user.ongId;
     }
 
-    const data = await Stock.findAll({
-      attributes: ['variety', [sequelize.fn('SUM', sequelize.col('quantity')), 'total']],
-      where,
-      group: ['variety'],
-      raw: true
-    });
+    const condition = where.ongId ? 'WHERE ongId = ?' : '';
+    const data = await prisma.$queryRawUnsafe(
+      `SELECT variety, SUM(quantity) as total FROM Stock ${condition} GROUP BY variety`,
+      ...(where.ongId ? [where.ongId] : [])
+    );
     res.json(data);
   } catch (err) {
     console.error(err);
@@ -62,7 +55,7 @@ router.get('/users/active', auth, role(['admin', 'admin_ong']), checkOng('ongId'
       where.ongId = req.user.ongId;
     }
 
-    const count = await Withdrawal.count({ where, distinct: true, col: 'userId' });
+    const count = await prisma.withdrawal.count({ where, distinct: 'userId' });
     res.json({ activeUsers: count });
   } catch (err) {
     console.error(err);
@@ -82,11 +75,11 @@ router.get('/export/:type/:format', auth, role(['admin', 'admin_ong']), checkOng
     }
 
     if (type === 'withdrawals') {
-      data = await Withdrawal.findAll({ where, raw: true });
+      data = await prisma.withdrawal.findMany({ where });
     } else if (type === 'stock') {
-      data = await Stock.findAll({ where, raw: true });
+      data = await prisma.stock.findMany({ where });
     } else if (type === 'active-users') {
-      const count = await Withdrawal.count({ where, distinct: true, col: 'userId' });
+      const count = await prisma.withdrawal.count({ where, distinct: 'userId' });
       data = [{ activeUsers: count }];
     } else {
       return res.status(400).json({ error: 'Invalid type' });

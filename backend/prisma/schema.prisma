@@ -1,0 +1,133 @@
+// Prisma schema replacing Sequelize models
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model ONG {
+  id          Int           @id @default(autoincrement())
+  name        String
+  description String?
+  phone       String?
+  email       String?
+  address     String?
+  statute     String?
+  documents   String?
+  status      ONGStatus     @default(pendiente)
+  users       User[]
+  withdrawals Withdrawal[]
+  documents   Document[]
+  medicalDocs MedicalDoc[]
+  legalRecords LegalRecord[]
+  doctorPatients DoctorPatient[]
+  stock       Stock[]
+}
+
+enum ONGStatus {
+  pendiente
+  aprobada
+  rechazada
+}
+
+model Role {
+  id    Int    @id @default(autoincrement())
+  name  String
+  users User[]
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  name          String
+  email         String    @unique
+  password      String
+  authorizedUse String?
+  legalStatus   String?
+  roleId        Int
+  role          Role      @relation(fields: [roleId], references: [id])
+  ongId         Int?
+  ong           ONG?      @relation(fields: [ongId], references: [id])
+  documents     Document[]
+  withdrawals   Withdrawal[]
+  doctorRelations DoctorPatient[] @relation("DoctorPatientsDoctor")
+  patientRelations DoctorPatient[] @relation("DoctorPatientsPatient")
+  doctorDocs    MedicalDoc[]      @relation("DoctorDocs")
+  patientDocs   MedicalDoc[]      @relation("PatientDocs")
+  legalRecords  LegalRecord[]     @relation("LegalRecordPatient")
+}
+
+model Document {
+  id     Int    @id @default(autoincrement())
+  title  String
+  path   String
+  userId Int
+  user   User   @relation(fields: [userId], references: [id])
+  ongId  Int?
+  ong    ONG?   @relation(fields: [ongId], references: [id])
+}
+
+model MedicalDoc {
+  id        Int    @id @default(autoincrement())
+  title     String
+  path      String
+  doctorId  Int
+  patientId Int
+  ongId     Int?
+  Doctor    User   @relation("DoctorDocs", fields: [doctorId], references: [id])
+  Patient   User   @relation("PatientDocs", fields: [patientId], references: [id])
+  ong       ONG?   @relation(fields: [ongId], references: [id])
+}
+
+model LegalRecord {
+  id        Int      @id @default(autoincrement())
+  type      String
+  path      String?
+  date      DateTime @default(now())
+  patientId Int
+  Patient   User     @relation("LegalRecordPatient", fields: [patientId], references: [id])
+  ongId     Int?
+  ong       ONG?     @relation(fields: [ongId], references: [id])
+}
+
+model Withdrawal {
+  id      Int              @id @default(autoincrement())
+  amount  Decimal          @db.Decimal(10,2)
+  variety String
+  date    DateTime         @default(now())
+  reason  String?
+  status  WithdrawalStatus @default(pendiente)
+  userId  Int
+  user    User             @relation(fields: [userId], references: [id])
+  ongId   Int
+  ong     ONG              @relation(fields: [ongId], references: [id])
+}
+
+enum WithdrawalStatus {
+  pendiente
+  aprobado
+  rechazado
+}
+
+model DoctorPatient {
+  doctorId Int
+  patientId Int
+  ongId    Int?
+  Doctor   User @relation("DoctorPatientsDoctor", fields: [doctorId], references: [id])
+  Patient  User @relation("DoctorPatientsPatient", fields: [patientId], references: [id])
+  ong      ONG? @relation(fields: [ongId], references: [id])
+
+  @@id([doctorId, patientId])
+}
+
+model Stock {
+  id      Int      @id @default(autoincrement())
+  variety String
+  quantity Decimal  @db.Decimal(10,2) @default(0)
+  ongId   Int
+  ong     ONG      @relation(fields: [ongId], references: [id])
+  withdrawals Withdrawal[]
+}

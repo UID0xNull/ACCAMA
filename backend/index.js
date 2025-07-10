@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
-const { sequelize } = require('./models');
+const prisma = require('./prismaClient');
 const authRoutes = require('./routes/auth');
 const ongRoutes = require('./routes/ong');
 const withdrawalRoutes = require('./routes/withdrawal');
@@ -37,8 +37,8 @@ app.get('/', (req, res) => {
   res.send('Server is running');
 });
 
-sequelize
-  .authenticate()
+prisma
+  .$connect()
   .then(() => console.log('Database connected'))
   .catch(err => console.error('Database connection error:', err));
 

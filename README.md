@@ -8,17 +8,12 @@
 En la carpeta `backend` copiar el archivo `.env.example` a `.env` y completar los valores de las siguientes claves:
 
 - `PORT`: puerto del servidor (por defecto 3000).
-- `DB_HOST`: host de la base de datos.
-- `DB_PORT`: puerto de MariaDB.
-- `DB_NAME`: nombre de la base de datos.
-- `DB_USER`: usuario de la base de datos.
-- `DB_PASSWORD`: contraseña del usuario.
+- `DATABASE_URL`: URL de conexión para Prisma.
 - `JWT_SECRET`: clave para firmar los tokens.
 
-En `frontend` también puede crearse un archivo `.env` (ver `.env.example`) con las siguientes variables:
+En `frontend` también puede crearse un archivo `.env` con la variable:
 
-- `PORT`: puerto del servidor de desarrollo de React (por defecto 3001).
-- `REACT_APP_API_URL`: URL base del backend al que se realizarán las peticiones.
+- `NEXT_PUBLIC_API_URL`: URL base del backend al que se realizarán las peticiones.
 
 ## Levantar el backend
 
@@ -42,7 +37,7 @@ cd frontend
 npm install
 PORT=3001 npm run dev
 
-Asegúrate de que `REACT_APP_API_URL` apunte a la URL del backend.
+Asegúrate de que `NEXT_PUBLIC_API_URL` apunte a la URL del backend.
 ```
 
 ## Roles

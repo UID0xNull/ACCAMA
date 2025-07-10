@@ -1,13 +1,8 @@
-import React, { createContext, useState } from 'react';
-import { parseJwt } from '../utils/jwt';
+import { createContext, useEffect, useState } from 'react';
+import { parseJwt } from '../lib/jwt';
 
-export const AuthContext = createContext({
-  token: null,
-  role: null,
-  login: () => {},
-  logout: () => {},
-  loadFromStorage: () => {}
-});
+export const AuthContext = createContext({ token: null, role: null, login: () => {}, logout: () => {}, loadFromStorage: () => {} });
+
 
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem('token'));
@@ -42,9 +37,6 @@ export function AuthProvider({ children }) {
     }
   };
 
-  return (
-    <AuthContext.Provider value={{ token, role, login, logout, loadFromStorage }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ token, role, login, logout, loadFromStorage }}>{children}</AuthContext.Provider>;
+
 }

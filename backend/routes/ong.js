@@ -1,8 +1,7 @@
 const express = require('express');
 const path = require('path');
 const multer = require('multer');
-const { ONG } = require('../models');
-const { Op } = require('sequelize');
+const prisma = require('../prismaClient');
 const auth = require('../middlewares/authMiddleware');
 const role = require('../middlewares/roleMiddleware');
 
@@ -26,15 +25,18 @@ router.get('/', auth, role(['admin']), async (req, res) => {
     const { page = 1, limit = 10, status, name } = req.query;
     const where = {};
     if (status) where.status = status;
-    if (name) where.name = { [Op.like]: `%${name}%` };
+    if (name) where.name = { contains: name };
 
-    const result = await ONG.findAndCountAll({
-      where,
-      offset: (parseInt(page) - 1) * parseInt(limit),
-      limit: parseInt(limit)
-    });
+    const [data, total] = await Promise.all([
+      prisma.oNG.findMany({
+        where,
+        skip: (parseInt(page) - 1) * parseInt(limit),
+        take: parseInt(limit)
+      }),
+      prisma.oNG.count({ where })
+    ]);
 
-    res.json({ data: result.rows, total: result.count, page: parseInt(page) });
+    res.json({ data, total, page: parseInt(page) });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
@@ -47,7 +49,7 @@ router.post('/', auth, role(['admin']), upload.fields([{ name: 'statute', maxCou
     const { name, description, phone, email, address } = req.body;
     const statute = req.files['statute'] ? req.files['statute'][0].filename : null;
     const documents = req.files['documents'] ? req.files['documents'][0].filename : null;
-    const ong = await ONG.create({ name, description, phone, email, address, statute, documents });
+    const ong = await prisma.oNG.create({ data: { name, description, phone, email, address, statute, documents } });
     res.status(201).json(ong);
   } catch (err) {
     console.error(err);
@@ -58,7 +60,7 @@ router.post('/', auth, role(['admin']), upload.fields([{ name: 'statute', maxCou
 // Get pending ONGs (admin only)
 router.get('/pending', auth, role(['admin']), async (req, res) => {
   try {
-    const list = await ONG.findAll({ where: { status: 'pendiente' } });
+    const list = await prisma.oNG.findMany({ where: { status: 'pendiente' } });
     res.json(list);
   } catch (err) {
     console.error(err);
@@ -69,10 +71,7 @@ router.get('/pending', auth, role(['admin']), async (req, res) => {
 // Approve ONG (admin only)
 router.post('/:id/approve', auth, role(['admin']), async (req, res) => {
   try {
-    const ong = await ONG.findByPk(req.params.id);
-    if (!ong) return res.status(404).json({ error: 'Not found' });
-    ong.status = 'aprobada';
-    await ong.save();
+    const ong = await prisma.oNG.update({ where: { id: parseInt(req.params.id) }, data: { status: 'aprobada' } });
     res.json(ong);
   } catch (err) {
     console.error(err);
@@ -83,10 +82,7 @@ router.post('/:id/approve', auth, role(['admin']), async (req, res) => {
 // Reject ONG (admin only)
 router.post('/:id/reject', auth, role(['admin']), async (req, res) => {
   try {
-    const ong = await ONG.findByPk(req.params.id);
-    if (!ong) return res.status(404).json({ error: 'Not found' });
-    ong.status = 'rechazada';
-    await ong.save();
+    const ong = await prisma.oNG.update({ where: { id: parseInt(req.params.id) }, data: { status: 'rechazada' } });
     res.json(ong);
   } catch (err) {
     console.error(err);
