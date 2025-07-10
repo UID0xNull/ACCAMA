@@ -24,8 +24,8 @@
     "csv-writer": "^1.6.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.1",
-    "pdfkit": "^0.15.0",
-    "prisma": "^5.9.1",
-    "@prisma/client": "^5.9.1"
+    "pdfkit": "^0.17.1",
+    "prisma": "6.11.1",
+    "@prisma/client": "6.11.1"
   }
 }
