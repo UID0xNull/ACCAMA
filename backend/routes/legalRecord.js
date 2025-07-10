@@ -54,10 +54,21 @@ router.post('/', auth, role(['doctor']), upload.single('file'), async (req, res)
 router.get('/:patientId', auth, async (req, res) => {
   try {
     const { patientId } = req.params;
+
+    // Patients can only access their own records
+    if (req.user.role === 'paciente' && parseInt(patientId) !== parseInt(req.user.id)) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+
     const patient = await User.findByPk(patientId);
-    if (!patient || parseInt(patient.ongId) !== parseInt(req.user.ongId)) {
+    if (!patient) {
+      return res.status(404).json({ error: 'Patient not found' });
+    }
+
+    if (req.user.role !== 'admin' && parseInt(patient.ongId) !== parseInt(req.user.ongId)) {
       return res.status(403).json({ error: 'ONG mismatch' });
     }
+
     const list = await LegalRecord.findAll({ where: { patientId } });
     res.json(list);
   } catch (err) {

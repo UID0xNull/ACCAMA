@@ -1,16 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { apiFetch } from '../services/api';
+import { parseJwt } from '../utils/jwt';
 
 export default function PacientePage() {
   const { token } = useContext(AuthContext);
+  const [userId, setUserId] = useState(null);
   const [records, setRecords] = useState([]);
 
   useEffect(() => {
-    apiFetch('/legal-records/1', { token })
+    const payload = parseJwt(token);
+    setUserId(payload?.id || null);
+  }, [token]);
+
+  useEffect(() => {
+    if (!userId) return;
+    apiFetch(`/legal-records/${userId}`, { token })
       .then(setRecords)
       .catch(() => {});
-  }, [token]);
+  }, [token, userId]);
 
   return (
     <div>
